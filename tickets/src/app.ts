@@ -5,6 +5,7 @@ import cookieSession from "cookie-session";
 import cors from "cors";
 
 import { errorHandler, NotFoundError } from "@didastickets/common";
+import { mainRouter } from "./routes";
 
 const app = express();
 const { NODE_ENV } = process.env;
@@ -18,6 +19,8 @@ app.use(
     secure: NODE_ENV !== "test",
   })
 );
+
+app.use(mainRouter)
 
 
 app.all("*", () => {

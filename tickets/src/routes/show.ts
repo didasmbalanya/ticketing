@@ -9,10 +9,6 @@ const router = Router();
 router.get(`${baseRoute}/:id`, async (req: Request, res: Response) => {
   const ticket = await Ticket.findById(req.params.id);
 
-  if (!ticket) {
-    throw new NotFoundError();
-  }
-
   res.send(ticket);
 });
 

@@ -5,7 +5,7 @@ import { baseRoute } from "../new";
 const title = "some title";
 const price = 10.0;
 
-const createTicket = () => {
+export const createTicket = () => {
   return request(app).post(baseRoute).set("Cookie", global.signin()).send({
     title,
     price,

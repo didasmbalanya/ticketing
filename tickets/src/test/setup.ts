@@ -2,7 +2,6 @@ import { Jwt } from "@didastickets/common";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
-
 declare global {
   namespace NodeJS {
     interface Global {
@@ -38,7 +37,7 @@ afterAll(async () => {
 global.signin = () => {
   // build JWT payload { id, email }
   const payload = {
-    id: "asdadasdsad",
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: "test@test.com",
   };
 

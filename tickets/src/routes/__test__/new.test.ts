@@ -59,7 +59,7 @@ it("returns an error when given an invalid price", async () => {
     .expect(422);
 });
 
-it("creates a ticket with invalid input", async () => {
+it("creates a ticket with valid input", async () => {
   const title = "test title";
   const price = 10.0;
   let tickets = await Ticket.find({});

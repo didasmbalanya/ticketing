@@ -25,7 +25,7 @@ spec:
               service:
                 name: tickets-srv
                 port:
-                  number: 4000
+                  number: 3000
 
           - pathType: Prefix
             path: /?(.*)

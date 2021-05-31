@@ -5,7 +5,7 @@ import cookieSession from "cookie-session";
 import cors from "cors";
 
 import { errorHandler, NotFoundError } from "@didastickets/common";
-// import { mainRouter } from "./routes";
+import { mainRouter } from "./routes";
 
 const app = express();
 const { NODE_ENV } = process.env;
@@ -20,8 +20,7 @@ app.use(
   })
 );
 
-// app.use(mainRouter)
-
+app.use(mainRouter);
 
 app.all("*", () => {
   throw new NotFoundError();

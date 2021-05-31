@@ -23,6 +23,7 @@ app.use(
 app.use(mainRouter);
 
 app.all("*", () => {
+  console.log("Route not found");
   throw new NotFoundError();
 });
 

@@ -3,10 +3,11 @@ import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
 
 const PORT = 3000;
-const { JWT_KEY, MONGO_URI, NATS_CLUSTER_ID, NATS_CLIENT_ID, NATS_URL } = process.env;
+const { JWT_KEY, MONGO_URI, NATS_CLUSTER_ID, NATS_CLIENT_ID, NATS_URL } =
+  process.env;
 
 const start = async () => {
-  if (!JWT_KEY || !MONGO_URI) {
+  if (!JWT_KEY) {
     throw new Error("JWT_KEY must be defined");
   }
   if (!MONGO_URI) {

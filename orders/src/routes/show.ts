@@ -10,7 +10,7 @@ import { baseRoute } from "./";
 const router = Router();
 
 router.get(
-  `${baseRoute}/:orderId`,
+  `/api/orders/:orderId`,
   requireAuth,
   async (req: Request, res: Response) => {
     const { orderId } = req.params;

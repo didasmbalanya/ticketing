@@ -5,27 +5,26 @@ import {
   requireAuth,
   validateRequest,
 } from "@didastickets/common";
-import express, { Request, Response } from "express";
+import express, { Request, Response, Router } from "express";
 import mongoose from "mongoose";
 import { body } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
 
-import { baseRoute } from ".";
 import { Ticket } from "../../models/ticket";
 import { Order } from "../../models/order";
 
-const router = express.Router();
+const router = Router();
 
 const EXPIRATION_WINDOW_SECONDS = 15 * 60; // 15 minutes
 
 router.post(
-  baseRoute,
+  "/api/orders",
   requireAuth,
   [
     body("ticketId")
       .not()
       .isEmpty()
-      .custom((input: string) => mongoose.Types.ObjectId.isValid(input)) // valid mongo ID
+      .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
       .withMessage("ticketId must be provided"),
   ],
   validateRequest,
@@ -40,7 +39,7 @@ router.post(
       throw new NotFoundError();
     }
 
-    const isReserved = ticket.isReserved();
+    const isReserved = await ticket.isReserved();
 
     if (isReserved) {
       throw new BadRequestError("Ticket is already reserved");
@@ -65,5 +64,6 @@ router.post(
     res.status(201).send(order);
   }
 );
+
 
 export { router as createOrderRouter };

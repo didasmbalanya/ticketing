@@ -5,7 +5,7 @@ import { baseRoute } from "./";
 
 const router = Router();
 
-router.get(`${baseRoute}`, requireAuth, async (req: Request, res: Response) => {
+router.get("/api/orders", requireAuth, async (req: Request, res: Response) => {
   const orders = await Order.find({
     userId: req.currentUser!.id,
   }).populate("ticket");

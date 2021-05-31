@@ -1,10 +1,9 @@
-import {
-  currentUser,
-  requireAuth,
-  validateRequest,
-} from "@didastickets/common";
+import { requireAuth, validateRequest } from "@didastickets/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import { natsWrapper } from "../nats-wrapper";
+
+import { TicketCreatedPublisher } from "../events/publishers/ticket-created-publisher";
 import { Ticket } from "../models/ticket";
 
 const router = express.Router();
@@ -26,6 +25,16 @@ router.post(
 
     const ticket = Ticket.build({ price, title, userId: id });
     await ticket.save();
+
+    const client = natsWrapper.client;
+
+    const publisher = new TicketCreatedPublisher(client);
+    publisher.publish({
+      id: ticket.id,
+      price: ticket.price,
+      title: ticket.title,
+      userId: ticket.userId,
+    });
 
     res.status(201).send(ticket);
   }

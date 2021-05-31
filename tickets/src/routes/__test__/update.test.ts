@@ -1,7 +1,9 @@
 import request from "supertest";
 import mongoose from "mongoose";
+
 import { app } from "../../app";
 import { baseRoute } from "../new";
+import { natsWrapper } from "../../nats-wrapper";
 
 const title = "asadad";
 const price = 10.0;
@@ -103,4 +105,26 @@ it("updates when provided valid inputs", async () => {
   );
 
   expect(ticketResponse.body.title).toEqual("new title");
+});
+
+it("publishes an event", async () => {
+  const cookie = global.signin();
+  const response = await request(app)
+    .post(baseRoute)
+    .set("Cookie", cookie)
+    .send({
+      title,
+      price,
+    });
+
+  await request(app)
+    .put(`${baseRoute}/${response.body.id}`)
+    .set("Cookie", cookie)
+    .send({
+      title: "new title",
+      price,
+    })
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

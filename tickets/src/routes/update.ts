@@ -7,6 +7,8 @@ import {
 } from "@didastickets/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
+import { natsWrapper } from "../nats-wrapper";
+import { TicketUpdatedPublisher } from "../events/publishers/ticket-updated-publisher";
 import { Ticket } from "../models/ticket";
 import { baseRoute } from "./new";
 
@@ -38,6 +40,13 @@ router.put(
     ticket.set({ id: req.params.id, title, price });
 
     await ticket.save();
+
+    await new TicketUpdatedPublisher(natsWrapper.client).publish({
+      title: ticket.title,
+      id: ticket.id,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
 
     res.send(ticket);
   }

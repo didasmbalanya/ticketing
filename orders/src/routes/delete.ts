@@ -6,6 +6,8 @@ import {
 } from "@didastickets/common";
 import { Request, Response, Router } from "express";
 import { Order } from "../../models/order";
+import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
+import { natsWrapper } from "../nats-wrapper";
 import { baseRoute } from "./";
 
 const router = Router();
@@ -31,6 +33,11 @@ router.delete(
     await order.save();
 
     // publish an event saing order was cancelled
+
+    new OrderCancelledPublisher(natsWrapper.client).publish({
+      id: order.id,
+      ticket: { id: order.ticket.id },
+    });
 
     res.status(204).send(order);
   }

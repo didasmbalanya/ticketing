@@ -1,6 +1,6 @@
 import { NotFoundError, requireAuth } from "@didastickets/common";
 import { Request, Response, Router } from "express";
-import { Order } from "../../models/order";
+import { Order } from "../models/order";
 import { baseRoute } from "./";
 
 const router = Router();

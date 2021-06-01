@@ -10,8 +10,8 @@ import mongoose from "mongoose";
 import { body } from "express-validator";
 import { natsWrapper } from "../nats-wrapper";
 
-import { Ticket } from "../../models/ticket";
-import { Order } from "../../models/order";
+import { Ticket } from "../models/ticket";
+import { Order } from "../models/order";
 import { OrderCreatedPublisher } from "../events/publishers/order-created-publisher";
 
 const router = Router();
@@ -65,6 +65,7 @@ router.post(
       id: order.id,
       status: order.status,
       userId: order.userId,
+      version: order.version,
       expiresAt: order.expiresAt.toISOString(),
       ticket: { id: order.ticket.id, price: order.ticket.price },
     });

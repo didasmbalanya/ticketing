@@ -1,6 +1,6 @@
 import { Listener, Subjects, TicketCreatedEvent } from "@didastickets/common";
 import { Message } from "node-nats-streaming";
-import { Ticket } from "../../../models/ticket";
+import { Ticket } from "../../models/ticket";
 import { queueGroupName } from "./queue-group-name";
 
 export class TicketCreatedListener extends Listener<TicketCreatedEvent> {

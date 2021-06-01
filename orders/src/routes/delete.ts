@@ -5,7 +5,7 @@ import {
   requireAuth,
 } from "@didastickets/common";
 import { Request, Response, Router } from "express";
-import { Order } from "../../models/order";
+import { Order } from "../models/order";
 import { OrderCancelledPublisher } from "../events/publishers/order-cancelled-publisher";
 import { natsWrapper } from "../nats-wrapper";
 import { baseRoute } from "./";
@@ -36,6 +36,7 @@ router.delete(
 
     new OrderCancelledPublisher(natsWrapper.client).publish({
       id: order.id,
+      version: order.version,
       ticket: { id: order.ticket.id },
     });
 

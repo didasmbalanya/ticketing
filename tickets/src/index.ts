@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { app } from "./app";
+import { startEventListeners } from "./events/listeners";
 import { natsWrapper } from "./nats-wrapper";
 
 const PORT = 3000;
@@ -37,6 +38,8 @@ const start = async () => {
 
     process.on("SIGINT", () => natsWrapper.client.close());
     process.on("SIGTERM", () => natsWrapper.client.close());
+
+    startEventListeners()
   } catch (error) {
     console.log("\n\n>>>>> DB/NATS connect error <<<<<<<<<<<\n\n");
     console.log(error);
